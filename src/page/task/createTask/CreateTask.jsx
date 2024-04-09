@@ -8,7 +8,7 @@ import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import styles from "./EditTaskForm.module.css";
+import styles from "./CreateTask.module.css";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -25,7 +25,7 @@ const style = {
   p: 4,
 };
 
-const EditTaskForm = ({ handleClose, open }) => {
+const CreateTask = ({ handleClose, open }) => {
   const [formData, setFormData] = useState({
     title: "",
     image: "",
@@ -64,8 +64,6 @@ const EditTaskForm = ({ handleClose, open }) => {
     const formatedDate = date.toISOString();
     return formatedDate;
   };
-
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -163,7 +161,7 @@ const EditTaskForm = ({ handleClose, open }) => {
                     className={styles.customButton}
                     type="submit"
                   >
-                    Update Task
+                    Create Task
                   </Button>
                 </Grid>
               </Grid>
@@ -174,7 +172,8 @@ const EditTaskForm = ({ handleClose, open }) => {
     </div>
   );
 };
-export default EditTaskForm;
+
+export default CreateTask;
 
 const tags = [
   { title: "React" },

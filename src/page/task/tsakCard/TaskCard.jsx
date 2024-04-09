@@ -22,37 +22,49 @@ const TaskCard = () => {
     setAnchorEl(null);
   };
 
+
+  
+  // This is the state to control the UserList popover visibility
   const [openUserList, setOpenUserList] = useState(false);
+  // Handler to close the UserList popover
   const handleCloeUserList = () => {
     setOpenUserList(false);
   };
+  // Handler to open the UserList popover
   const handleOpenUserList = () => {
     setOpenUserList(true);
-    handleClose();
+    handleClose(); // Close the menu
     console.log("handleOpenUserList");
   };
 
+  // This is the state to control the EditTaskForm popover visibility
   const [openEditTaskForm, setopenEditTaskForm] = useState(false);
+  // Handler to close the EditTaskForm popover
   const handleCloeEditTaskForm = () => {
     setopenEditTaskForm(false);
   };
+  // Handler to open the EditTaskForm popover
   const handleOpenEditTaskForm = () => {
     setopenEditTaskForm(true);
-    handleClose();
+    handleClose(); // Close the menu
     console.log("handleopenSubmissionList");
   };
 
+  // Handler to delete the task
   const handleDeleteTask = () => {
     console.log("handleDeleteTask");
   };
 
+  // This is the state to control the SubmissionList popover visibility
   const [openSubmissionList, setopenSubmissionList] = useState(false);
+  // Handler to close the SubmissionList popover
   const handleCloeSubmissionList = () => {
     setopenSubmissionList(false);
   };
+  // Handler to open the SubmissionList popover
   const handleOpenSubmissionList = () => {
     setopenSubmissionList(true);
-    handleClose();
+    handleClose(); // Close the menu
     console.log("handleopenSubmissionList");
   };
 
