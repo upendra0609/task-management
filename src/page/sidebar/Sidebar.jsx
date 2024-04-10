@@ -3,8 +3,13 @@ import { Avatar, Button } from "@mui/material";
 import style from "./Sidebar.module.css";
 import { sideMenu } from "./sideMenu";
 import CreateTask from "../task/createTask/CreateTask";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
+  const location = useLocation();
+  const updatedParams = new URLSearchParams(location.search);
+  const navigate = useNavigate();
+
   const [activeMenu, setActiveMenu] = useState("Home");
 
   // This is the state to control the EditTaskForm popover visibility
@@ -19,10 +24,21 @@ const Sidebar = () => {
   };
 
   const handleMenuChange = (item) => {
-    if (item === "Create New Task") {
-      setOpenTaskForm(true);
+    if (item.name === "Create New Task") {
+      // setOpenTaskForm(true);
+      handlepenTaskForm();
+    } else if (item.name === "HOME") {
+      updatedParams.delete("filter");
+      const queryString = updatedParams.toString();
+      const updatedPath = queryString
+        ? `${location.pathname}?${queryString}`
+        : location.pathname;
+      navigate(updatedPath);
+    } else {
+      updatedParams.set("filter", item.value);
+      navigate(`${location.pathname}?${updatedParams.toString()}`);
     }
-    setActiveMenu(item);
+    setActiveMenu(item.value);
   };
 
   const handleLogout = () => {
@@ -51,7 +67,7 @@ const Sidebar = () => {
                     ? `${style.activeMenuItem}`
                     : `${style.menuItem}`
                 }`}
-                onClick={() => handleMenuChange(item.name)}
+                onClick={() => handleMenuChange(item)}
               >
                 {item.name}
               </p>
