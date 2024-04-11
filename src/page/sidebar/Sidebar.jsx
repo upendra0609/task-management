@@ -5,7 +5,7 @@ import { sideMenu } from "./sideMenu";
 import CreateTask from "../task/createTask/CreateTask";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const Sidebar = () => {
+const Sidebar = ({ setIsMenuOpen, isMenuOpen }) => {
   const location = useLocation();
   const updatedParams = new URLSearchParams(location.search);
   const navigate = useNavigate();
@@ -48,9 +48,10 @@ const Sidebar = () => {
   return (
     <>
       <div
-        className={`${style.card} min-h-[85vh] flex flex-col justify-center fixed w-[20vw]`}
+        className={`${style.card} min-h-[85vh] flex flex-col justify-start fixed lg:w-[20vw]`}
       >
         <div className="space-y-5 h-full">
+          {/* tailwind css clss name to hide the logo */}
           <div className="flex justify-center">
             <Avatar
               sx={{ width: "6.5rem", height: "6.5rem" }}
@@ -62,7 +63,7 @@ const Sidebar = () => {
             .map((item) => (
               <p
                 key={item.name}
-                className={`py-3.5 px-5 rounded-full text-center cursor-pointer ${
+                className={`py-3.5 px-5 rounded-full text-center cursor-pointer text-sm sm:text-base ${
                   activeMenu == item.name
                     ? `${style.activeMenuItem}`
                     : `${style.menuItem}`
@@ -75,7 +76,7 @@ const Sidebar = () => {
           <Button
             sx={{ padding: "0.7rem", borderRadius: "2rem" }}
             fullWidth
-            className={`${style.logoutButton}`}
+            className={`${style.logoutButton} text-sm sm:text-base`}
             onClick={handleLogout}
           >
             Logout
