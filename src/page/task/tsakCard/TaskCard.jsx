@@ -22,8 +22,6 @@ const TaskCard = () => {
     setAnchorEl(null);
   };
 
-
-  
   // This is the state to control the UserList popover visibility
   const [openUserList, setOpenUserList] = useState(false);
   // Handler to close the UserList popover
@@ -86,7 +84,7 @@ const TaskCard = () => {
                 Use Latest Frameworks and technology to make this website
               </p>
             </div>
-            <div className="flex flex-grow-2 items-center justify-center gap-2">
+            <div className="flex flex-grow-2 flex-wrap lg:flex-nowrap items-center justify-center gap-2">
               {[1, 2, 3, 4, 5].map((item) => (
                 <span
                   className={`py-1 px-5 rounded-full ${style.techStack}`}
