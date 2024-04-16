@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import style from "./UserList.module.css";
@@ -10,6 +10,9 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserList } from "../../../store/authSlice";
+import { assignTaskToUser } from "../../../store/taskSlice";
 
 const styles = {
   position: "absolute",
@@ -23,9 +26,19 @@ const styles = {
   p: 2,
 };
 
-const tasks = [1, 2, 3, 4];
+const UserList = ({ handleClose, open, taskId }) => {
+  const dispatch = useDispatch();
+  const { auth } = useSelector((store) => store);
 
-const UserList = ({ handleClose, open }) => {
+  useEffect(() => {
+    dispatch(getUserList(localStorage.getItem("jwt")));
+  }, []);
+
+  const handleAssignTask = (userId, taskId) => {
+    console.log(userId, taskId);
+    dispatch(assignTaskToUser({ userId: userId, taskId: taskId }));
+  };
+
   return (
     <div className={""}>
       <div>
@@ -36,29 +49,36 @@ const UserList = ({ handleClose, open }) => {
           aria-describedby="modal-modal-description"
         >
           <Box sx={styles}>
-            {tasks.map((item, index) => (
-              <>
+            {auth.users?.map((item, index) => (
+              <div key={index}>
                 <div
-                  key={index}
+                  // key={index}
                   className="flex items-center justify-between w-full"
                 >
                   <div className="">
                     <ListItem>
                       <ListItemAvatar>
-                        <Avatar src="">C</Avatar>
+                        <Avatar src="">
+                          {item.firstName?.toUpperCase().charAt(0)}
+                        </Avatar>
                       </ListItemAvatar>
                       <ListItemText
-                        primary={"code with me"}
-                        secondary={"@code with me"}
+                        secondary={`@${item.firstName}`}
+                        primary={item.firstName + " " + item.lastName}
                       ></ListItemText>
                     </ListItem>
                   </div>
                   <div>
-                    <Button className={`${style.customeButton}`}>Select</Button>
+                    <Button
+                      className={`${style.customeButton}`}
+                      onClick={() => handleAssignTask(item.id, taskId)}
+                    >
+                      Select
+                    </Button>
                   </div>
                 </div>
-                {index != tasks.length - 1 && <Divider variant="inset" />}
-              </>
+                {index != item.length - 1 && <Divider variant="inset" />}
+              </div>
             ))}
           </Box>
         </Modal>

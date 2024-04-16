@@ -1,10 +1,15 @@
 import { Button, TextField } from "@mui/material";
 import React, { useState } from "react";
 import style from "./Auth.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserProfile, login } from "../../store/authSlice";
 
 const Signin = ({ togglePannel }) => {
+  const dispatch = useDispatch();
+  const auth = useSelector((store) => store.auth);
+
   const [formData, setFormData] = useState({
-    email: "",
+    userName: "",
     password: "",
   });
 
@@ -15,7 +20,16 @@ const Signin = ({ togglePannel }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    dispatch(login(formData));
+
+    /*dispatch(login(formData)).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        console.log("log in", res.payload.token);
+        console.log("jwt", localStorage.getItem("jwt"));
+        // invoke getUserProfile action creator
+        dispatch(getUserProfile(res.payload.token));
+      }
+    });*/
   };
 
   return (
@@ -25,7 +39,7 @@ const Signin = ({ togglePannel }) => {
         <TextField
           fullWidth
           label="Email"
-          name="email"
+          name="userName"
           type="email"
           value={formData.email}
           onChange={handleChange}
@@ -44,8 +58,9 @@ const Signin = ({ togglePannel }) => {
             sx={{ padding: "0.9rem" }}
             className={style.customButton}
             type="submit"
+            disabled={auth.loading}
           >
-            Login
+            {auth.loading ? "Loading..." : "Login"}
           </Button>
         </div>
       </form>

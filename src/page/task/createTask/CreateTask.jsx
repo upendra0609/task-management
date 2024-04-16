@@ -9,6 +9,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import styles from "./CreateTask.module.css";
+import { useDispatch } from "react-redux";
+import { createTask } from "../../../store/taskSlice";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -30,11 +32,13 @@ const CreateTask = ({ handleClose, open }) => {
     title: "",
     image: "",
     description: "",
-    tag: [],
+    tags: [],
     deadline: new Date(),
   });
 
   const [selectedTag, setSelectedTag] = useState([]);
+
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,7 +47,7 @@ const CreateTask = ({ handleClose, open }) => {
 
   const handleTagChange = (e, value) => {
     setSelectedTag(value);
-    setFormData({ ...formData, tag: value });
+    setFormData({ ...formData, tags: value });
   };
 
   const handleDeadLineChange = (date) => {
@@ -68,7 +72,8 @@ const CreateTask = ({ handleClose, open }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     formData.deadline = formatDate(formData.deadline);
-    console.log(formData);
+    console.log("Form Data ", formData);
+    dispatch(createTask(formData));
     handleClose();
   };
 
@@ -120,7 +125,7 @@ const CreateTask = ({ handleClose, open }) => {
                     options={tags}
                     // disableCloseOnSelect
                     onChange={handleTagChange}
-                    getOptionLabel={(option) => option.title}
+                    getOptionLabel={(option) => option}
                     // renderOption={(props, option, { selected }) => (
                     //   <li {...props}>
                     //     <Checkbox
@@ -176,13 +181,13 @@ const CreateTask = ({ handleClose, open }) => {
 export default CreateTask;
 
 const tags = [
-  { title: "React" },
-  { title: "Angular" },
-  { title: "Java" },
-  { title: "Spring Boot" },
-  { title: "Node js" },
-  { title: "Pythons" },
-  { title: "Docker" },
-  { title: "Jenkins" },
-  { title: "AWS" },
+  "React",
+  "Angular",
+  "Java",
+  "Spring Boot",
+  "Node js",
+  "Pythons",
+  "Docker",
+  "Jenkins",
+  "AWS",
 ];

@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import SubmissionCard from "./SubmissionCard";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllSubmission } from "../../../store/submissionSlice";
 
 const style = {
   position: "absolute",
@@ -19,6 +21,13 @@ const style = {
 const submissions = [1, 2, 3];
 
 const SubmissionList = ({ handleClose, open }) => {
+  const dispatch = useDispatch();
+  const { submission } = useSelector((state) => state);
+
+  useEffect(() => {
+    dispatch(fetchAllSubmission());
+  }, [submission.submission?.length]);
+
   return (
     <div className={""}>
       <div>
@@ -30,11 +39,11 @@ const SubmissionList = ({ handleClose, open }) => {
         >
           <Box sx={style}>
             <div className="space-y-2">
-              {submissions.length != 0 ? (
+              {submission.submission?.length != 0 ? (
                 <div className="space-y-2">
-                  <SubmissionCard />
-                  <SubmissionCard />
-                  <SubmissionCard />
+                  {submission.submission?.map((item, index) => (
+                    <SubmissionCard key={index} submission={item} />
+                  ))}
                 </div>
               ) : (
                 <div className="text-center">No Submission found</div>

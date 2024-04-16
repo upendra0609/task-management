@@ -9,6 +9,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import styles from "./EditTaskForm.module.css";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { updateTask } from "../../../store/taskSlice";
 
 const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
 const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -25,13 +28,13 @@ const style = {
   p: 4,
 };
 
-const EditTaskForm = ({ handleClose, open }) => {
+const EditTaskForm = ({ handleClose, open, item }) => {
   const [formData, setFormData] = useState({
-    title: "",
-    image: "",
-    description: "",
-    tag: [],
-    deadline: new Date(),
+    title: item.title,
+    image: item.image,
+    description: item.description,
+    tags: [],
+    deadline: null,
   });
 
   const [selectedTag, setSelectedTag] = useState([]);
@@ -42,11 +45,13 @@ const EditTaskForm = ({ handleClose, open }) => {
   };
 
   const handleTagChange = (e, value) => {
+    console.log("tags ", value);
     setSelectedTag(value);
-    setFormData({ ...formData, tag: value });
+    setFormData({ ...formData, tags: value });
   };
 
-  const handleDeadLineChange = (date) => {
+  const handleDeadLineChange = () => {
+    const date = new Date();
     setFormData({ ...formData, deadline: date });
   };
 
@@ -65,12 +70,17 @@ const EditTaskForm = ({ handleClose, open }) => {
     return formatedDate;
   };
 
-  
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    formData.deadline = formatDate(formData.deadline);
+    console.log(formData.deadline);
+    if (formData.deadline != null) {
+      formData.deadline = formatDate(formData.deadline);
+    }
+    dispatch(updateTask({ taskId: item.id, taskData: formData }));
     console.log(formData);
+
     handleClose();
   };
 
@@ -122,7 +132,7 @@ const EditTaskForm = ({ handleClose, open }) => {
                     options={tags}
                     // disableCloseOnSelect
                     onChange={handleTagChange}
-                    getOptionLabel={(option) => option.title}
+                    getOptionLabel={(option) => option}
                     // renderOption={(props, option, { selected }) => (
                     //   <li {...props}>
                     //     <Checkbox
@@ -142,6 +152,7 @@ const EditTaskForm = ({ handleClose, open }) => {
                         placeholder="Technology used"
                         name="tags"
                         fullWidth
+                        // value={"abs"}
                       />
                     )}
                   />
@@ -177,13 +188,13 @@ const EditTaskForm = ({ handleClose, open }) => {
 export default EditTaskForm;
 
 const tags = [
-  { title: "React" },
-  { title: "Angular" },
-  { title: "Java" },
-  { title: "Spring Boot" },
-  { title: "Node js" },
-  { title: "Pythons" },
-  { title: "Docker" },
-  { title: "Jenkins" },
-  { title: "AWS" },
+  "React",
+  "Angular",
+  "Java",
+  "Spring Boot",
+  "Node js",
+  "Pythons",
+  "Docker",
+  "Jenkins",
+  "AWS",
 ];
